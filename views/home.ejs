@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 10px;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      label {
+        font-size: 14px;
+        font-weight: normal;
+        line-height: 1.5;
+        margin-bottom: 3px;
+      }
+      input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 300px;
+      }
+      button {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: fit-content;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #ccc;
+      }
+      th, td {
+        border: 1px solid #ccc;
+      }
+      th {
+        background-color: #f0f0f0;
+        padding: 10px;
+      }
+      td {
+        text-align: center;
+        padding: 10px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <h1>Url Shortener</h1>
+    <% if (locals.shortId) { %>
+    <p>
+      Your short url is:
+      <a href="http://localhost:8001/<%= locals.shortId %>"
+        ><%= locals.shortId %></a
+      >
+    </p>
+    <% } %>
+    <form action="/url" method="POST">
+      <label for="url">Enter your original url</label>
+      <input
+        type="text"
+        name="url"
+        id="url"
+        placeholder="https://example.com"
+      />
+      <button type="submit">Generate URL</button>
+    </form>
+    <% if (locals.urls) { %>
+    <h2>All URLs</h2>
+    <table>
+      <tr>
+        <tr></tr>
+          <th>S No.</th>
+          <th>Short Id</th>
+          <th>Redirect</th>
+          <th>Original Url</th>
+          <th>Clicks</th>
+      </tr>
+      </thead>
+      <tbody>
+        <% urls.forEach((url, index) => { %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= url.shortId %></td>
+          <td><a href="<%= url.redirectUrl %>" target="_blank"><%= url.redirectUrl %></a></td>
+          <td><a href="http://localhost:8001/<%= url.shortId %>" target="_blank"><%= `http://localhost:8001/${url.shortId}` %></a></td>
+          <td><%= url.visitHistory.length %></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <% } %>
+  </body>
+</html>
